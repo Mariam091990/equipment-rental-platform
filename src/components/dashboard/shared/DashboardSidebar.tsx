@@ -35,52 +35,94 @@ import { IUser } from "@/types";
 import { TUserRole } from "@/types";
 
 
- const roleBasedSidebarItems = {
+const roleBasedSidebarItems = {
 
-        admin: [
-            {
-                title: "Admin Dashboard",
-                url: "/admin/dashboard",
-                icon: LayoutDashboard,
-            },
-        ],
-        owner: [
-            {
-                title: "Owner Dashboard",
-                url: "/owner/dashboard",
-                icon: LayoutDashboard,
-            },
-        ],
-        customer: [
-            {
-                title: "Customer Dashboard",
-                url: "/customer/dashboard",
-                icon: LayoutDashboard,
-            },
-            {
-                title: "My Rentals",
-                url: "/customer/my-rentals",
-                icon: PackageCheck,
-            },
-            {
-                title: "Favorites",
-                url: "/customer/favorites",
-                icon: Heart,
-            },
-            {
-                title: "Profile",
-                url: "/customer/profile",
-                icon: UserRound,
-            }
+    admin: [
+        {
+            title: "Admin Dashboard",
+            url: "/admin/dashboard",
+            icon: LayoutDashboard,
+        },
+        {
+            title: "All Users",
+            url: "/admin/all-users",
+            icon: UserRound,
 
-        ],
+        },
+        {
+            title: "All Equipment",
+            url: "/admin/all-equipment",
+            icon: Package,
+        },
 
-    };
+        {
+            title: "All Rentals",
+            url: "/admin/all-rentals",
+            icon: PackageCheck,
+        },
 
-    const dashboardLinks = (userRole: string) => {
-        const role = userRole.toLowerCase() as TUserRole;
-        return roleBasedSidebarItems[role] || [];
-    };
+        {
+            title: "profile",
+            url: "/admin/profile",
+            icon: UserRound,
+
+        }
+    ],
+    owner: [
+        {
+            title: "Owner Dashboard",
+            url: "/owner/dashboard",
+            icon: LayoutDashboard,
+        },{
+            title: "Add Equipment",
+            url: "/owner/add-equipment",
+            icon: Package,
+        },{
+            title: "My Equipment",
+            url: "/owner/my-equipment",
+            icon: Package,  
+        },
+        {
+            title: "My Equipment Rental",
+            url: "/owner/my-rental",
+            icon: PackageCheck,
+        },
+        {
+            title: "Profile",
+            url: "/owner/profile",
+            icon: UserRound,
+        }
+    ],
+    customer: [
+        {
+            title: "Customer Dashboard",
+            url: "/customer/dashboard",
+            icon: LayoutDashboard,
+        },
+        {
+            title: "My Rentals",
+            url: "/customer/my-rentals",
+            icon: PackageCheck,
+        },
+        {
+            title: "Favorites",
+            url: "/customer/favorites",
+            icon: Heart,
+        },
+        {
+            title: "Profile",
+            url: "/customer/profile",
+            icon: UserRound,
+        }
+
+    ],
+
+};
+
+const dashboardLinks = (userRole: string) => {
+    const role = userRole.toLowerCase() as TUserRole;
+    return roleBasedSidebarItems[role] || [];
+};
 
 export function DashboardSidebar({ user }: { user: IUser | null }) {
 
