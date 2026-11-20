@@ -7,6 +7,7 @@ export const metadata: Metadata = {
 
 }
 
+ export const instant = false
 const page = () => {
     return (
         <div>
