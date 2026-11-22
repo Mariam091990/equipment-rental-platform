@@ -84,7 +84,7 @@ const roleBasedSidebarItems = {
         },
         {
             title: "My Equipment Rental",
-            url: "/owner/my-rental",
+            url: "/owner/my-equipment-rental",
             icon: PackageCheck,
         },
         {

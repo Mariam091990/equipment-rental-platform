@@ -24,3 +24,11 @@ export interface IUser {
     status: "Pending" | "Approved" | "Rejected";
     createdAt: string;
 }
+
+
+export type TCommonApiResponse<T> = {
+    success: boolean;
+    message: string;
+  
+    data: T;
+};

@@ -6,7 +6,14 @@ import { authClient } from "@/lib/auth-client";
 import Link from "next/link";
 import Image from "next/image";
 import toast from "react-hot-toast";
-import { Eye, Package, RefreshCw } from "lucide-react";
+import {
+    Eye,
+    Package,
+    RefreshCw,
+    Pencil,
+    Trash2,
+    X,
+} from "lucide-react";
 import { IEquipment } from "@/types";
 
 
@@ -14,43 +21,11 @@ export default function MyEquipmentPage() {
     const [equipmentList, setEquipmentList] = useState<IEquipment[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
-    // const fetchMyEquipment = useCallback(async () => {
-    //     try {
+    const [editingEquipment, setEditingEquipment] =
+        useState<IEquipment | null>(null);
 
-
-    //         const { data, error } = await authClient.token();
-
-    //         if (error || !data?.token) {
-    //             throw new Error("Please sign in again.");
-    //         }
-
-    //         const response = await fetch(
-    //             `${process.env.NEXT_PUBLIC_API_URL}/owner/equipment`,
-    //             {
-    //                 headers: {
-    //                     Authorization: `Bearer ${data.token}`,
-    //                 },
-    //                 cache: "no-store",
-    //             }
-    //         );
-
-    //         const result = await response.json();
-
-    //         if (!response.ok) {
-    //             throw new Error(result.message || "Failed to fetch equipment.");
-    //         }
-
-    //         setEquipmentList(result.equipment || []);
-    //     } catch (error) {
-    //         toast.error(
-    //             error instanceof Error
-    //                 ? error.message
-    //                 : "Something went wrong."
-    //         );
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // }, []);
+    const [saving, setSaving] = useState(false);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
 
     const fetchMyEquipment = useCallback(async (): Promise<IEquipment[]> => {
         const { data, error } = await authClient.token();
@@ -107,7 +82,114 @@ export default function MyEquipmentPage() {
         };
     }, [fetchMyEquipment]);
 
+    const handleDelete = async (id: string) => {
+        const confirmed = window.confirm(
+            "Are you sure you want to delete this equipment?"
+        );
 
+        if (!confirmed) return;
+
+        try {
+            setDeletingId(id);
+
+            const { data, error } = await authClient.token();
+
+            if (error || !data?.token) {
+                throw new Error("Please sign in again.");
+            }
+
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/owner/equipment/${id}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        Authorization: `Bearer ${data.token}`,
+                    },
+                }
+            );
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || "Failed to delete equipment.");
+            }
+
+            setEquipmentList((previous) =>
+                previous.filter((item) => item._id !== id)
+            );
+
+            toast.success(result.message || "Equipment deleted successfully!");
+        } catch (error) {
+            toast.error(
+                error instanceof Error ? error.message : "Something went wrong."
+            );
+        } finally {
+            setDeletingId(null);
+        }
+    };
+
+    const handleUpdate = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        if (!editingEquipment) return;
+
+        try {
+            setSaving(true);
+
+            const formData = new FormData(event.currentTarget);
+
+            const updatedData = {
+                equipmentName: formData.get("equipmentName"),
+                description: formData.get("description"),
+                category: formData.get("category"),
+                location: formData.get("location"),
+                rentalPrice: formData.get("rentalPrice"),
+                rentalType: formData.get("rentalType"),
+                availableQuantity: formData.get("availableQuantity"),
+                equipmentCondition: formData.get("equipmentCondition"),
+                brand: formData.get("brand"),
+                model: formData.get("model"),
+                equipmentImage: formData.get("equipmentImage"),
+                rentalTerms: formData.get("rentalTerms"),
+            };
+
+            const { data, error } = await authClient.token();
+
+            if (error || !data?.token) {
+                throw new Error("Please sign in again.");
+            }
+
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/owner/equipment/${editingEquipment._id}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${data.token}`,
+                    },
+                    body: JSON.stringify(updatedData),
+                }
+            );
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || "Failed to update equipment.");
+            }
+
+            const refreshedEquipment = await fetchMyEquipment();
+            setEquipmentList(refreshedEquipment);
+
+            setEditingEquipment(null);
+            toast.success(result.message || "Equipment updated successfully!");
+        } catch (error) {
+            toast.error(
+                error instanceof Error ? error.message : "Something went wrong."
+            );
+        } finally {
+            setSaving(false);
+        }
+    };
     return (
         <div className="min-h-screen bg-[#FAF9F6] px-4 py-8 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-7xl">
@@ -125,29 +207,29 @@ export default function MyEquipmentPage() {
 
                     <div className="flex gap-3">
                         <button
-    onClick={() => {
-        setLoading(true);
+                            onClick={() => {
+                                setLoading(true);
 
-        fetchMyEquipment()
-            .then((equipment) => {
-                setEquipmentList(equipment);
-            })
-            .catch((error) => {
-                toast.error(
-                    error instanceof Error
-                        ? error.message
-                        : "Something went wrong."
-                );
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    }}
-    disabled={loading}
->
-    <RefreshCw size={16} />
-    Refresh
-</button>
+                                fetchMyEquipment()
+                                    .then((equipment) => {
+                                        setEquipmentList(equipment);
+                                    })
+                                    .catch((error) => {
+                                        toast.error(
+                                            error instanceof Error
+                                                ? error.message
+                                                : "Something went wrong."
+                                        );
+                                    })
+                                    .finally(() => {
+                                        setLoading(false);
+                                    });
+                            }}
+                            disabled={loading}
+                        >
+                            <RefreshCw size={16} />
+                            Refresh
+                        </button>
 
                         <Link
                             href="/owner/add-equipment"
@@ -209,7 +291,7 @@ export default function MyEquipmentPage() {
                                         <th className="px-5 py-4">Quantity</th>
                                         <th className="px-5 py-4">Status</th>
                                         <th className="px-5 py-4">Date Added</th>
-                                        <th className="px-5 py-4">Details</th>
+                                        <th className="px-5 py-4">Actions</th>
                                     </tr>
                                 </thead>
 
@@ -273,14 +355,35 @@ export default function MyEquipmentPage() {
                                             </td>
 
                                             <td className="px-5 py-4">
-                                                <Link
-                                                    href={`/equipment/${item._id}`}
-                                                    title="View equipment details"
-                                                    className="inline-flex items-center gap-1 rounded-lg border border-stone-300 px-3 py-2 text-xs font-medium text-stone-700 hover:bg-stone-100"
-                                                >
-                                                    <Eye size={14} />
-                                                    View
-                                                </Link>
+                                                <div className="flex items-center gap-2">
+                                                    <Link
+                                                        href={`/equipment/${item._id}`}
+                                                        title="View equipment details"
+                                                        className="inline-flex items-center gap-1 rounded-lg border border-stone-300 px-3 py-2 text-xs font-medium text-stone-700 hover:bg-stone-100"
+                                                    >
+                                                        <Eye size={14} />
+                                                        View
+                                                    </Link>
+
+                                                    <button
+                                                        onClick={() => setEditingEquipment(item)}
+                                                        title="Update equipment"
+                                                        className="inline-flex items-center gap-1 rounded-lg border border-blue-200 px-3 py-2 text-xs font-medium text-blue-700 hover:bg-blue-50"
+                                                    >
+                                                        <Pencil size={14} />
+                                                        Edit
+                                                    </button>
+
+                                                    <button
+                                                        onClick={() => handleDelete(item._id)}
+                                                        disabled={deletingId === item._id}
+                                                        title="Delete equipment"
+                                                        className="inline-flex items-center gap-1 rounded-lg border border-red-200 px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                                                    >
+                                                        <Trash2 size={14} />
+                                                        {deletingId === item._id ? "Deleting..." : "Delete"}
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))}
@@ -290,6 +393,211 @@ export default function MyEquipmentPage() {
                     )}
                 </div>
             </div>
+            {editingEquipment && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+                    <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl bg-white p-6 shadow-xl">
+                        <div className="mb-6 flex items-center justify-between">
+                            <div>
+                                <h2 className="text-xl font-bold text-stone-900">
+                                    Update Equipment
+                                </h2>
+                                <p className="mt-1 text-sm text-stone-500">
+                                    Update your equipment information.
+                                </p>
+                            </div>
+
+                            <button
+                                type="button"
+                                onClick={() => setEditingEquipment(null)}
+                                className="rounded-lg p-2 text-stone-500 hover:bg-stone-100"
+                            >
+                                <X size={20} />
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleUpdate} className="space-y-4">
+                            <div className="grid gap-4 sm:grid-cols-2">
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-stone-700">
+                                        Equipment Name
+                                    </label>
+                                    <input
+                                        name="equipmentName"
+                                        defaultValue={editingEquipment.equipmentName}
+                                        required
+                                        className="w-full rounded-lg border border-stone-300 px-3 py-2.5 outline-none focus:border-stone-600"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-stone-700">
+                                        Category
+                                    </label>
+                                    <input
+                                        name="category"
+                                        defaultValue={editingEquipment.category}
+                                        required
+                                        className="w-full rounded-lg border border-stone-300 px-3 py-2.5 outline-none focus:border-stone-600"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-stone-700">
+                                        Rental Price
+                                    </label>
+                                    <input
+                                        name="rentalPrice"
+                                        type="number"
+                                        min="0.01"
+                                        step="0.01"
+                                        defaultValue={editingEquipment.rentalPrice}
+                                        required
+                                        className="w-full rounded-lg border border-stone-300 px-3 py-2.5 outline-none focus:border-stone-600"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-stone-700">
+                                        Rental Type
+                                    </label>
+                                    <select
+                                        name="rentalType"
+                                        defaultValue={editingEquipment.rentalType}
+                                        required
+                                        className="w-full rounded-lg border border-stone-300 px-3 py-2.5 outline-none focus:border-stone-600"
+                                    >
+                                        <option value="Daily">Daily</option>
+                                        <option value="Weekly">Weekly</option>
+                                        <option value="Monthly">Monthly</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-stone-700">
+                                        Available Quantity
+                                    </label>
+                                    <input
+                                        name="availableQuantity"
+                                        type="number"
+                                        min="1"
+                                        step="1"
+                                        defaultValue={editingEquipment.availableQuantity}
+                                        required
+                                        className="w-full rounded-lg border border-stone-300 px-3 py-2.5 outline-none focus:border-stone-600"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-stone-700">
+                                        Location
+                                    </label>
+                                    <input
+                                        name="location"
+                                        defaultValue={editingEquipment.location}
+                                        required
+                                        className="w-full rounded-lg border border-stone-300 px-3 py-2.5 outline-none focus:border-stone-600"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-stone-700">
+                                        Brand
+                                    </label>
+                                    <input
+                                        name="brand"
+                                        defaultValue={editingEquipment.brand}
+                                        required
+                                        className="w-full rounded-lg border border-stone-300 px-3 py-2.5 outline-none focus:border-stone-600"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-stone-700">
+                                        Model
+                                    </label>
+                                    <input
+                                        name="model"
+                                        defaultValue={editingEquipment.model}
+                                        required
+                                        className="w-full rounded-lg border border-stone-300 px-3 py-2.5 outline-none focus:border-stone-600"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-stone-700">
+                                        Equipment Condition
+                                    </label>
+                                    <input
+                                        name="equipmentCondition"
+                                        defaultValue={editingEquipment.equipmentCondition}
+                                        required
+                                        className="w-full rounded-lg border border-stone-300 px-3 py-2.5 outline-none focus:border-stone-600"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="mb-1 block text-sm font-medium text-stone-700">
+                                        Equipment Image URL
+                                    </label>
+                                    <input
+                                        name="equipmentImage"
+                                        type="url"
+                                        defaultValue={editingEquipment.equipmentImage}
+                                        required
+                                        className="w-full rounded-lg border border-stone-300 px-3 py-2.5 outline-none focus:border-stone-600"
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="mb-1 block text-sm font-medium text-stone-700">
+                                    Description
+                                </label>
+                                <textarea
+                                    name="description"
+                                    defaultValue={editingEquipment.description}
+                                    required
+                                    rows={3}
+                                    className="w-full rounded-lg border border-stone-300 px-3 py-2.5 outline-none focus:border-stone-600"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="mb-1 block text-sm font-medium text-stone-700">
+                                    Rental Terms and Conditions
+                                </label>
+                                <textarea
+                                    name="rentalTerms"
+                                    defaultValue={editingEquipment.rentalTerms}
+                                    required
+                                    rows={3}
+                                    className="w-full rounded-lg border border-stone-300 px-3 py-2.5 outline-none focus:border-stone-600"
+                                />
+                            </div>
+
+                            <div className="flex justify-end gap-3 pt-3">
+                                <button
+                                    type="button"
+                                    onClick={() => setEditingEquipment(null)}
+                                    disabled={saving}
+                                    className="rounded-lg border border-stone-300 px-5 py-2.5 text-sm font-medium text-stone-700 hover:bg-stone-100"
+                                >
+                                    Cancel
+                                </button>
+
+                                <button
+                                    type="submit"
+                                    disabled={saving}
+                                    className="rounded-lg bg-stone-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-stone-700 disabled:opacity-50"
+                                >
+                                    {saving ? "Updating..." : "Save Changes"}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 }
