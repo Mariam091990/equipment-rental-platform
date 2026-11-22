@@ -44,4 +44,10 @@ export const auth = betterAuth({
         jwt(),
     ],
 
+trustedOrigins: [
+    "http://localhost:3000",
+    "https://equipment-rental-platform-client.vercel.app",
+  ],
+
+
 });
