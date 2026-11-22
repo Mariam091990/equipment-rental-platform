@@ -44,7 +44,7 @@ export default function SigninForm() {
         }
         else {
             console.log(resData);
-            toast.success("Sign up done successfully");
+            toast.success("Sign in done successfully");
             router.push("/");
 
         }

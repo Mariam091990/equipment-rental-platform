@@ -169,7 +169,7 @@ export default function SignupForm() {
 
                                 <FieldDescription className="text-center">
                                     Have an account?{" "}
-                                    <a href="/login">Login</a>
+                                    <a href="/signIn">Login</a>
                                 </FieldDescription>
                             </Field>
                         </FieldGroup>
