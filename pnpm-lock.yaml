@@ -193,6 +193,9 @@ importers:
       embla-carousel-react:
         specifier: ^8.6.0
         version: 8.6.0(react@19.3.0)
+      equipment-rental-platform-client:
+        specifier: 'link:'
+        version: 'link:'
       framer-motion:
         specifier: ^14.14.0
         version: 14.14.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
