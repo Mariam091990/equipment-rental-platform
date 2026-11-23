@@ -34,20 +34,35 @@ export const auth = betterAuth({
 
 
     socialProviders: {
+        google: {
+
+
+            clientId: process.env.google_oauth_client_id as string,
+            clientSecret: process.env.google_oauth_client_secret as string,
+
+        },
+
         github: {
             clientId: process.env.GITHUB_CLIENT_ID as string,
             clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
         },
     },
 
+    account: {
+        accountLinking: {
+            enabled: true,
+            trustedProviders: ["google", "github"] // Add your providers
+        }
+    },
+
     plugins: [
         jwt(),
     ],
 
-trustedOrigins: [
-    "http://localhost:3000",
-    "https://equipment-rental-platform-client.vercel.app",
-  ],
+    trustedOrigins: [
+        "http://localhost:3000",
+        "https://equipment-rental-platform-client.vercel.app",
+    ],
 
 
 });

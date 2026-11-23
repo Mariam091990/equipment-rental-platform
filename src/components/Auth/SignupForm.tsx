@@ -74,7 +74,15 @@ export default function SignupForm() {
             { duration: 4000 }
         )
         router.push("/");
-     
+
+    }
+
+
+    const handleGoogleSignUp = async () => {
+        const data = await authClient.signIn.social({
+            provider: "google",
+        });
+        console.log(data);
     }
 
     const handleGithubSignIn = async () => {
@@ -95,7 +103,17 @@ export default function SignupForm() {
                     <form onSubmit={handleSignUp} >
                         <FieldGroup>
                             <Field>
+                                <Button onClick={handleGoogleSignUp} variant="outline" type="button">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path
 
+                                            fill="#4285F4"
+                                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.05 5.05 0 0 1-2.2 3.31v2.77h3.57c2.08-1.91 3.27-4.72 3.27-8.09Z"
+                                        />
+
+                                    </svg>
+                                    Sign up with Google
+                                </Button>
                                 <Button onClick={handleGithubSignIn} variant="outline" type="button">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                                         <path

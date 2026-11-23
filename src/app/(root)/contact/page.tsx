@@ -11,7 +11,7 @@ import {
     CheckCircle2,
 } from "lucide-react";
 
-const SUPPORT_EMAIL = "YOUR_SUPPORT_EMAIL@example.com";
+const SUPPORT_EMAIL = "admin_panel@gmail.com";
 
 export default function ContactPage() {
     const [submitted, setSubmitted] = useState(false);
