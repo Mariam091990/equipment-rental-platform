@@ -73,7 +73,7 @@ export default function AllEquipmentPage() {
     const [editForm, setEditForm] = useState(initialForm);
     const [saving, setSaving] = useState(false);
     const [actionId, setActionId] = useState<string | null>(null);
-
+    const [openActionId, setOpenActionId] = useState<string | null>(null);
     // Get JWT and make an authenticated API request
     const getToken = async () => {
         const { data, error } = await authClient.token();
@@ -634,7 +634,7 @@ export default function AllEquipmentPage() {
                                         </td>
 
                                         {/* Actions */}
-                                        <td className="min-w-65 px-5 py-4">
+                                        {/* <td className="min-w-65 px-5 py-4">
                                             <div className="flex flex-wrap items-center gap-2">
                                                 {item.status !== "Approved" && (
                                                     <button
@@ -700,7 +700,122 @@ export default function AllEquipmentPage() {
                                                     Delete
                                                 </button>
                                             </div>
+                                        </td> */}
+
+
+                                        {/* <td>
+                                            <details className="relative inline-block text-left">
+                                                <summary className="flex cursor-pointer list-none items-center gap-2 rounded-lg border px-4 py-2">
+                                                    Actions
+                                                    <ChevronDown size={16} />
+                                                </summary>
+
+                                                <div className="absolute right-0 z-50 mt-2 w-40 rounded-lg border bg-white p-2 shadow-lg">
+                                                    {item.status !== "Approved" && (
+                                                        <button
+                                                            onClick={() => handleStatusUpdate(item, "Approved")}
+                                                            className="block w-full rounded-md px-3 py-2 text-left text-sm text-green-600 hover:bg-green-50"
+                                                        >
+                                                            Approve
+                                                        </button>
+                                                    )}
+
+                                                    {item.status !== "Rejected" && (
+                                                        <button
+                                                            onClick={() => handleStatusUpdate(item, "Rejected")}
+                                                            className="block w-full rounded-md px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
+                                                        >
+                                                            Reject
+                                                        </button>
+                                                    )}
+
+                                                    <button
+                                                        onClick={() => openEditModal(item)}
+                                                        className="block w-full rounded-md px-3 py-2 text-left text-sm hover:bg-gray-100"
+                                                    >
+                                                        Update
+                                                    </button>
+
+                                                    <button
+                                                        onClick={() => handleDelete(item)}
+                                                        className="block w-full rounded-md px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
+                                                    >
+                                                        Delete
+                                                    </button>
+                                                </div>
+                                            </details>
+
+                                        </td> */}
+
+
+
+                                        <td className="px-6 py-4 text-center">
+                                            <div className="relative inline-block text-left">
+                                                <button
+                                                    type="button"
+                                                    onClick={() =>
+                                                        setOpenActionId(
+                                                            openActionId === item._id ? null : item._id
+                                                        )
+                                                    }
+                                                    className="flex cursor-pointer items-center gap-2 rounded-lg border border-gray-200 px-4 py-2 hover:bg-gray-50"
+                                                >
+                                                    Actions
+                                                    <ChevronDown size={16} />
+                                                </button>
+
+                                                {openActionId === item._id && (
+                                                    <div className="absolute right-0 z-50 mt-2 w-40 rounded-lg border border-gray-200 bg-white p-2 shadow-lg">
+
+                                                        {item.status !== "Approved" && (
+                                                            <button
+                                                                onClick={async () => {
+                                                                    await handleStatusUpdate(item, "Approved");
+                                                                    setOpenActionId(null);
+                                                                }}
+                                                                className="block w-full rounded-md px-3 py-2 text-left text-sm text-green-600 hover:bg-green-50"
+                                                            >
+                                                                Approve
+                                                            </button>
+                                                        )}
+
+                                                        {item.status !== "Rejected" && (
+                                                            <button
+                                                                onClick={async () => {
+                                                                    await handleStatusUpdate(item, "Rejected");
+                                                                    setOpenActionId(null);
+                                                                }}
+                                                                className="block w-full rounded-md px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
+                                                            >
+                                                                Reject
+                                                            </button>
+                                                        )}
+
+                                                        <button
+                                                            onClick={() => {
+                                                                openEditModal(item);
+                                                                setOpenActionId(null);
+                                                            }}
+                                                            className="block w-full rounded-md px-3 py-2 text-left text-sm hover:bg-gray-100"
+                                                        >
+                                                            Update
+                                                        </button>
+
+                                                        <button
+                                                            onClick={async () => {
+                                                                await handleDelete(item);
+                                                                setOpenActionId(null);
+                                                            }}
+                                                            className="block w-full rounded-md px-3 py-2 text-left text-sm text-red-600 hover:bg-red-50"
+                                                        >
+                                                            Delete
+                                                        </button>
+
+                                                    </div>
+                                                )}
+                                            </div>
                                         </td>
+
                                     </tr>
                                 ))}
                             </tbody>
