@@ -381,8 +381,8 @@ export default function AllUsersPage() {
                                                         src={user.image}
                                                         alt={user.name || "User"}
                                                         className="h-10 w-10 rounded-full border border-stone-200 object-cover"
-                                                        width={2}
-                                                        height={2}
+                                                        width={100}
+                                                        height={100}
                                                     />
                                                 ) : (
                                                     <div className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-100 text-stone-500">

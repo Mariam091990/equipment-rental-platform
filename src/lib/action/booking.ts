@@ -37,7 +37,7 @@ import { authClient } from "@/lib/auth-client";
 
 interface IBookingPayload {
     equipmentId: string;
-    equipmentName:string,
+    equipmentName: string,
     startDate: string;
     endDate: string;
     rentalDuration: number;
@@ -126,6 +126,43 @@ export async function getMyRentals() {
 
     } catch (error) {
         console.error("Error fetching rentals:", error);
+        throw error;
+    }
+}
+
+
+
+
+export async function getAllRentals() {
+    try {
+        const { data, error } = await authClient.token();
+
+        if (error || !data?.token) {
+            throw new Error("Please sign in again.");
+        }
+
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/admin/all-rentals`,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${data.token}`,
+                },
+                cache: "no-store",
+            }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                result.message || "Failed to fetch all rentals."
+            );
+        }
+
+        return result;
+    } catch (error) {
+        console.error("Error fetching all rentals:", error);
         throw error;
     }
 }

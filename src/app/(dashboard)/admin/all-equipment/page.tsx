@@ -558,8 +558,8 @@ export default function AllEquipmentPage() {
                                                         src={item.equipmentImage}
                                                         alt={item.equipmentName}
                                                         className="h-12 w-12 rounded-lg border border-stone-200 object-cover"
-                                                        width={2}
-                                                        height={2}
+                                                        width={100}
+                                                        height={100}
                                                     />
                                                 ) : (
                                                     <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-stone-100 text-stone-500">
