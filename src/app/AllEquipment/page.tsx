@@ -15,7 +15,7 @@ import {
     CalendarDays,
     CreditCard,
     Phone,
-
+    // UserRound,
     FileText,
 } from "lucide-react";
 import { createBooking } from "@/lib/action/booking";
@@ -38,6 +38,12 @@ interface IEquipment {
     createdAt: string;
     startDate: string;
     endDate: string
+
+    owner?: {
+        userId?: string;
+        name?: string;
+        email?: string;
+    };
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -86,6 +92,8 @@ export default function AllEquipmentPage() {
     const [deliveryAddress, setDeliveryAddress] = useState("");
     const [bookingNotes, setBookingNotes] = useState("");
     const [bookingError, setBookingError] = useState("");
+
+
     const fetchEquipment = useCallback(async () => {
         const params = new URLSearchParams();
 
@@ -790,6 +798,25 @@ export default function AllEquipmentPage() {
                                                 {item.location}
                                             </span>
                                         </div>
+
+
+                                        {/* Equipment Owner */}
+                                        <div className="mt-4 flex items-center gap-3 rounded-xl border border-stone-100 bg-stone-50 p-3">
+                                            {/* <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-orange-100 text-orange-700">
+                                               <UserRound size={19} />
+                                            </div>  */}
+
+                                            <div className="min-w-0">
+                                                <p className="text-xs text-stone-500">
+                                                    Equipment Owner
+                                                </p>
+
+                                                <p className="truncate text-sm font-semibold text-stone-800">
+                                                    {item.owner?.name || "Equipment Owner"}
+                                                </p>
+                                            </div>
+                                        </div>
+
 
                                         {/* Rental Type */}
                                         <div className="mt-4 flex items-center justify-between text-sm">
