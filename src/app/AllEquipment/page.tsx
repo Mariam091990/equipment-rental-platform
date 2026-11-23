@@ -36,6 +36,8 @@ interface IEquipment {
     model?: string;
     status: string;
     createdAt: string;
+    startDate: string;
+    endDate: string
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -343,48 +345,69 @@ export default function AllEquipmentPage() {
     };
 
 
-    //     const handleBookingSubmit = async (item: IEquipment) => {
 
 
-    // try {
 
-    //     const res = await  createBooking ( {equipmentId: item._id, userEmail:customerEmail || ""}) as TCommonApiResponse<{redirectUrl: string}>;
+    // const handleBookingSubmit = async (item: IEquipment) => {
+    //     try {
+    //         const res = await createBooking({
+    //             equipmentId: item._id,
+    //             userEmail: customerEmail || "",
+    //         });
 
-    // if (res.success){
+    //         if (res.success && res.url) {
+    //             console.log("Stripe Checkout URL:", res.url);
 
-    // console.log('response', res);
-    // }
-
-    //     }catch(error){
-
-    //         console.log("Error creating booking", error);
-
+    //             // Redirect customer to Stripe Checkout
+    //             window.location.href = res.url;
+    //         }
+    //     } catch (error) {
+    //         console.error("Error creating booking", error);
     //     }
-
-
-    // }
+    // };
 
 
     const handleBookingSubmit = async (item: IEquipment) => {
         try {
+            setBookingError("");
+
+            if (!rentalStartDate || !rentalEndDate) {
+                setBookingError("Please select your rental dates.");
+                return;
+            }
+
+            if (!customerPhone.trim() || !deliveryAddress.trim()) {
+                setBookingError("Please provide your phone number and delivery address.");
+                return;
+            }
+
             const res = await createBooking({
                 equipmentId: item._id,
-                userEmail: customerEmail || "",
+                equipmentName: item.equipmentName,
+                userEmail: customerEmail,
+                startDate: rentalStartDate,
+                endDate: rentalEndDate,
+                rentalDuration: getRentalDuration(),
+                rentalPeriods: getRentalPeriods(),
+                quantity: bookingQuantity,
+                customerPhone,
+                deliveryAddress,
+                bookingNotes,
             });
 
             if (res.success && res.url) {
-                console.log("Stripe Checkout URL:", res.url);
-
-                // Redirect customer to Stripe Checkout
                 window.location.href = res.url;
+            } else {
+                setBookingError("Unable to create your booking. Please try again.");
             }
         } catch (error) {
             console.error("Error creating booking", error);
+
+            setBookingError(
+                error instanceof Error ? error.message : "Something went wrong."
+            );
         }
     };
-
-
-
 
     return (
         <main className="min-h-screen bg-[#FAF8F5]">
