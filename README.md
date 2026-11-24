@@ -206,8 +206,7 @@ The application uses MongoDB to manage its data. Main collections include:
 **Mariam Farzana**
 
 - GitHub: https://github.com/Mariam091990
-- LinkedIn: YOUR_LINKEDIN_PROFILE_URL
-- Portfolio: YOUR_PORTFOLIO_URL
+
 
 ---
 
