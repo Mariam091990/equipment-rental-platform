@@ -49,18 +49,18 @@ const benefits = [
 
 export default function AboutPage() {
     return (
-        <main className="min-h-screen bg-[#faf9f6] text-stone-800">
+        <main className="min-h-screen bg-[#faf9f6] text-stone-700">
             {/* Hero */}
             <section className="relative overflow-hidden bg-[#172b28] px-6 py-24 text-white md:py-32">
                 <div className="absolute -right-20 -top-20 h-80 w-80 rounded-full bg-orange-500/10 blur-3xl" />
                 <div className="relative mx-auto max-w-7xl">
-                    <span className="mb-5 inline-block rounded-full border border-orange-300/30 bg-orange-400/10 px-4 py-2 text-sm font-medium text-orange-200">
+                    <span className="mb-5 inline-block rounded-full border border-orange-300/30 bg-orange-400/10 px-4 py-2 text-sm font-medium text-blue-200">
                         About Our Platform
                     </span>
 
                     <h1 className="max-w-3xl text-4xl font-bold leading-tight md:text-6xl">
                         Making Equipment Rental
-                        <span className="text-orange-400"> Simple & Accessible.</span>
+                        <span className="text-blue-400"> Simple & Accessible.</span>
                     </h1>
 
                     <p className="mt-6 max-w-2xl text-base leading-8 text-stone-300 md:text-lg">
@@ -71,7 +71,7 @@ export default function AboutPage() {
 
                     <Link
                         href="/AllEquipment"
-                        className="mt-9 inline-flex items-center gap-2 rounded-xl bg-orange-500 px-6 py-3.5 font-semibold text-white transition hover:bg-orange-600"
+                        className="mt-9 inline-flex items-center gap-2 rounded-xl bg-blue-500 px-6 py-3.5 font-semibold text-white transition hover:bg-blue-600"
                     >
                         Explore Equipment <ArrowRight size={18} />
                     </Link>
@@ -81,7 +81,7 @@ export default function AboutPage() {
             {/* Mission and Vision */}
             <section className="mx-auto grid max-w-7xl gap-8 px-6 py-20 md:grid-cols-2">
                 <div className="rounded-3xl border border-stone-200 bg-white p-8 shadow-sm md:p-10">
-                    <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-100 text-orange-600">
+                    <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
                         <Target size={28} />
                     </div>
                     <h2 className="text-2xl font-bold">Our Mission</h2>
@@ -93,7 +93,7 @@ export default function AboutPage() {
                 </div>
 
                 <div className="rounded-3xl border border-stone-200 bg-white p-8 shadow-sm md:p-10">
-                    <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-orange-100 text-orange-600">
+                    <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
                         <Eye size={28} />
                     </div>
                     <h2 className="text-2xl font-bold">Our Vision</h2>
@@ -107,9 +107,9 @@ export default function AboutPage() {
 
             {/* Our Story */}
             <section className="bg-white px-6 py-20">
-                <div className="mx-auto grid max-w-7xl items-center gap-12 md:grid-cols-2">
+                <div className="mx-auto grid max-w-xl items-center gap-12 md:grid-cols-2">
                     <div>
-                        <span className="text-sm font-bold uppercase tracking-widest text-orange-600">
+                        <span className="text-sm font-bold uppercase tracking-widest text-blue-600">
                             Who We Are
                         </span>
                         <h2 className="mt-4 text-3xl font-bold md:text-4xl">
@@ -135,7 +135,7 @@ export default function AboutPage() {
                                 <div key={benefit} className="flex items-start gap-3">
                                     <CheckCircle2
                                         size={21}
-                                        className="mt-1 shrink-0 text-orange-400"
+                                        className="mt-1 shrink-0 text-blue-400"
                                     />
                                     <p className="text-stone-200">{benefit}</p>
                                 </div>
@@ -148,7 +148,7 @@ export default function AboutPage() {
             {/* Core Values */}
             <section className="mx-auto max-w-7xl px-6 py-20">
                 <div className="mx-auto mb-12 max-w-2xl text-center">
-                    <span className="text-sm font-bold uppercase tracking-widest text-orange-600">
+                    <span className="text-sm font-bold uppercase tracking-widest text-blue-600">
                         What We Believe In
                     </span>
                     <h2 className="mt-3 text-3xl font-bold md:text-4xl">
@@ -161,7 +161,8 @@ export default function AboutPage() {
                 </div>
 
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-                    {values.map((value) => {
+                    {
+                    values.map((value) => {
                         const Icon = value.icon;
 
                         return (
@@ -169,7 +170,7 @@ export default function AboutPage() {
                                 key={value.title}
                                 className="rounded-2xl border border-stone-200 bg-white p-7 transition duration-300 hover:-translate-y-1 hover:shadow-lg"
                             >
-                                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-orange-100 text-orange-600">
+                                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
                                     <Icon size={24} />
                                 </div>
                                 <h3 className="text-lg font-bold">{value.title}</h3>
@@ -184,7 +185,7 @@ export default function AboutPage() {
 
             {/* CTA */}
             <section className="px-6 pb-20">
-                <div className="mx-auto max-w-7xl rounded-3xl bg-orange-500 px-8 py-14 text-center text-white md:py-16">
+                <div className="mx-auto max-w-7xl rounded-3xl bg-blue-500 px-8 py-14 text-center text-white md:py-16">
                     <h2 className="text-3xl font-bold md:text-4xl">
                         Ready to Find the Right Equipment?
                     </h2>
