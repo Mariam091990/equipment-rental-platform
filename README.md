@@ -76,7 +76,7 @@ The platform also includes role-based dashboards for customers, equipment owners
 - `lucide-react` – Icon library.
 - `tailwindcss` – Utility-first CSS framework.
 - `typescript` – Static type checking.
-- `recharts` – Data visualization, if used in dashboard components.
+
 
 ### Backend
 - `express` – REST API development.
