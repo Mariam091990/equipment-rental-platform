@@ -1,7 +1,7 @@
 
 "use client";
 
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import {
     Mail,
    
@@ -16,10 +16,10 @@ const SUPPORT_EMAIL = "admin_panel@gmail.com";
 export default function ContactPage() {
     const [submitted, setSubmitted] = useState(false);
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>)=> {
+        e.preventDefault();
 
-        const formData = new FormData(event.currentTarget);
+        const formData = new FormData(e.currentTarget);
 
         const name = String(formData.get("name") || "");
         const email = String(formData.get("email") || "");
@@ -35,19 +35,19 @@ export default function ContactPage() {
 
         window.location.href = mailtoLink;
         setSubmitted(true);
-        event.currentTarget.reset();
+        e.currentTarget.reset();
     };
 
     return (
         <main className="min-h-screen bg-[#faf9f6] text-stone-800">
             {/* Hero */}
             <section className="bg-[#172b28] px-6 py-20 text-center text-white md:py-24">
-                <span className="inline-block rounded-full border border-orange-300/30 bg-orange-400/10 px-4 py-2 text-sm font-medium text-orange-200">
+                <span className="inline-block rounded-full border border-blue-400-300/30 bg-blue-400/10 px-4 py-2 text-sm font-medium text-blue-200">
                     We&apos;d Love to Hear From You
                 </span>
 
                 <h1 className="mt-6 text-4xl font-bold md:text-5xl">
-                    Get in <span className="text-orange-400">Touch</span>
+                    Get in <span className="text-blue-400">Touch</span>
                 </h1>
 
                 <p className="mx-auto mt-5 max-w-2xl leading-8 text-stone-300">
@@ -60,7 +60,7 @@ export default function ContactPage() {
             <section className="mx-auto grid max-w-7xl gap-10 px-6 py-16 lg:grid-cols-5">
                 {/* Contact Information */}
                 <div className="lg:col-span-2">
-                    <span className="text-sm font-bold uppercase tracking-widest text-orange-600">
+                    <span className="text-sm font-bold uppercase tracking-widest text-blue-600">
                         Contact Information
                     </span>
 
@@ -75,7 +75,7 @@ export default function ContactPage() {
 
                     <div className="mt-9 space-y-5">
                         <div className="flex items-start gap-4 rounded-2xl border border-stone-200 bg-white p-5">
-                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-600">
+                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-bkue-600">
                                 <Mail size={22} />
                             </div>
                             <div>
@@ -87,7 +87,7 @@ export default function ContactPage() {
                         </div>
 
                         <div className="flex items-start gap-4 rounded-2xl border border-stone-200 bg-white p-5">
-                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-600">
+                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
                                 <MessageCircle size={22} />
                             </div>
                             <div>
@@ -100,7 +100,7 @@ export default function ContactPage() {
                         </div>
 
                         <div className="flex items-start gap-4 rounded-2xl border border-stone-200 bg-white p-5">
-                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-orange-100 text-orange-600">
+                            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
                                 <Clock size={22} />
                             </div>
                             <div>
@@ -146,7 +146,7 @@ export default function ContactPage() {
                                     type="text"
                                     placeholder="Enter your name"
                                     required
-                                    className="w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                                    className="w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                                 />
                             </div>
 
@@ -163,7 +163,7 @@ export default function ContactPage() {
                                     type="email"
                                     placeholder="Enter your email"
                                     required
-                                    className="w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                                    className="w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                                 />
                             </div>
                         </div>
@@ -181,7 +181,7 @@ export default function ContactPage() {
                                 type="text"
                                 placeholder="What is your inquiry about?"
                                 required
-                                className="w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                                className="w-full rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                             />
                         </div>
 
@@ -198,13 +198,13 @@ export default function ContactPage() {
                                 rows={6}
                                 placeholder="Write your message here..."
                                 required
-                                className="w-full resize-none rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 outline-none transition focus:border-orange-500 focus:ring-2 focus:ring-orange-100"
+                                className="w-full resize-none rounded-xl border border-stone-200 bg-stone-50 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                             />
                         </div>
 
                         <button
                             type="submit"
-                            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-orange-500 px-6 py-3.5 font-semibold text-white transition hover:bg-orange-600 sm:w-auto"
+                            className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-blue-500 px-6 py-3.5 font-semibold text-white transition hover:bg-blue-600 sm:w-auto"
                         >
                             Send Message <Send size={18} />
                         </button>
@@ -226,7 +226,7 @@ export default function ContactPage() {
 
                     <a
                         href="/AllEquipment"
-                        className="shrink-0 rounded-xl bg-orange-500 px-6 py-3 font-semibold transition hover:bg-orange-600"
+                        className="shrink-0 rounded-xl bg-blue-500 px-6 py-3 font-semibold transition hover:bg-blue-600"
                     >
                         Browse Equipment
                     </a>
